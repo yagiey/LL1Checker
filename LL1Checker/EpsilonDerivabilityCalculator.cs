@@ -4,23 +4,23 @@ using System.Linq;
 
 namespace LL1Checker
 {
-	internal class EpsilonDerivabilityCalculator
+	internal class EpsilonDerivabilityCalculator<TokenType>
 	{
 		private readonly HashSet<Symbol> _terminalSymbols;
 		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
 		private readonly IDictionary<SymbolSequence, bool> _epsilonDerivability;
 
-		public EpsilonDerivabilityCalculator(Grammer grammer)
+		public EpsilonDerivabilityCalculator(Grammer<TokenType> grammer)
 			: this(new Dictionary<SymbolSequence, bool>(), grammer)
 		{
 		}
 
-		public EpsilonDerivabilityCalculator(EpsilonDerivabilityCalculator prev, Grammer grammer)
+		public EpsilonDerivabilityCalculator(EpsilonDerivabilityCalculator<TokenType> prev, Grammer<TokenType> grammer)
 			:this(prev.DeepCopy(), grammer)
 		{
 		}
 
-		private EpsilonDerivabilityCalculator(IDictionary<SymbolSequence, bool> clone, Grammer grammer)
+		private EpsilonDerivabilityCalculator(IDictionary<SymbolSequence, bool> clone, Grammer<TokenType> grammer)
 		{
 			_terminalSymbols = grammer.GetTerminalSymbols();
 			_nonTerminalRules = grammer.GetNonTerminalRules();

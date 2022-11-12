@@ -4,19 +4,19 @@ using System.Linq;
 
 namespace LL1Checker
 {
-	internal class FirstSetCalculator
+	internal class FirstSetCalculator<TokenType>
 	{
 		private readonly IDictionary<SymbolSequence, HashSet<Symbol>> _firstSet;
 		private readonly IDictionary<SymbolSequence, bool> _done;
 		private readonly HashSet<Symbol> _terminalSymbols;
 		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
 
-		public FirstSetCalculator(FirstSetCalculator prev, Grammer grammer)
+		public FirstSetCalculator(FirstSetCalculator<TokenType> prev, Grammer<TokenType> grammer)
 			: this(prev.DeepCopyFirstSet(), prev._done, grammer)
 		{
 		}
 
-		public FirstSetCalculator(IDictionary<SymbolSequence, HashSet<Symbol>> prevSets, IDictionary<SymbolSequence, bool> done, Grammer grammer)
+		public FirstSetCalculator(IDictionary<SymbolSequence, HashSet<Symbol>> prevSets, IDictionary<SymbolSequence, bool> done, Grammer<TokenType> grammer)
 		{
 			_firstSet = prevSets;
 			_done = done;

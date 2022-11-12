@@ -2,6 +2,17 @@
 {
 	public enum TokenType
 	{
+		PunctuationLeftParen,
+		PunctuationRightParen,
+		PunctuationPlus,
+		PunctuationMinus,
+		PunctuationAsterisk,
+		PunctuationSlash,
+		LiteralInteger,
+	}
+
+	public enum TokenTypePL0p
+	{
 		/// <summary>integer number</summary>
 		LiteralInteger,
 		/// <summary>identifier</summary>

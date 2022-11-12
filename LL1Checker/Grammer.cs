@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LL1Checker
 {
-	internal class Grammer
+	internal class Grammer<TokenType>
 	{
 		private readonly IDictionary<Symbol, TokenType?> _terminalRules;
 		private readonly IDictionary<Symbol, IList<SymbolSequence>> _nonTerminalRules;
@@ -356,16 +356,16 @@ namespace LL1Checker
 				}
 			}
 
-			FirstSetCalculator oldSet = new(init, done, this);
+			FirstSetCalculator<TokenType> oldSet = new(init, done, this);
 			while (true)
 			{
-				FirstSetCalculator tmp1 = new(oldSet, this);
+				FirstSetCalculator<TokenType> tmp1 = new(oldSet, this);
 
 				foreach (Symbol s in _nonTerminalRules.Keys.OrderBy(it => -it.Rank))
 				{
 					if (!done[new SymbolSequence(s)])
 					{
-						FirstSetCalculator tmp2 = new(tmp1, this);
+						FirstSetCalculator<TokenType> tmp2 = new(tmp1, this);
 						tmp2.Calc(s);
 						tmp1 = tmp2;
 					}
@@ -380,7 +380,7 @@ namespace LL1Checker
 						{
 							if (!done[new SymbolSequence(tail)])
 							{
-								FirstSetCalculator tmp2 = new(tmp1, this);
+								FirstSetCalculator<TokenType> tmp2 = new(tmp1, this);
 								tmp2.Calc(tail);
 								tmp1 = tmp2;
 							}
@@ -407,7 +407,7 @@ namespace LL1Checker
 			return oldSet.GetFirstSet();
 		}
 
-		private static bool IsSame(FirstSetCalculator lhs, FirstSetCalculator rhs)
+		private static bool IsSame(FirstSetCalculator<TokenType> lhs, FirstSetCalculator<TokenType> rhs)
 		{
 			return IsSame(lhs.GetFirstSet(), rhs.GetFirstSet());
 		}
@@ -443,10 +443,10 @@ namespace LL1Checker
 
 		private IDictionary<Symbol, HashSet<Symbol>> GetFollowSet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
 		{
-			FollowSetCalculator oldSet = new(this, firstSet);
+			FollowSetCalculator<TokenType> oldSet = new(this, firstSet);
 			foreach (Symbol s in _nonTerminalRules.Keys.OrderBy(it => it.Rank))
 			{
-				FollowSetCalculator newSet = new(oldSet, this, firstSet);
+				FollowSetCalculator<TokenType> newSet = new(oldSet, this, firstSet);
 				newSet.Calc(s);
 
 				bool allSymbolPrepared = _nonTerminalRules.Keys.All(it => newSet.GetFollowSet().ContainsKey(it));
@@ -461,7 +461,7 @@ namespace LL1Checker
 			return oldSet.GetFollowSet();
 		}
 
-		private static bool IsSame(FollowSetCalculator lhs, FollowSetCalculator rhs)
+		private static bool IsSame(FollowSetCalculator<TokenType> lhs, FollowSetCalculator<TokenType> rhs)
 		{
 			return IsSame(lhs.GetFollowSet(), rhs.GetFollowSet());
 		}
@@ -492,10 +492,10 @@ namespace LL1Checker
 
 		private IDictionary<SymbolSequence, bool> GetEpsilonDerivabilitySet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
 		{
-			EpsilonDerivabilityCalculator oldSet = new(this);
+			EpsilonDerivabilityCalculator<TokenType> oldSet = new(this);
 			foreach (SymbolSequence seq in firstSet.Keys)
 			{
-				EpsilonDerivabilityCalculator newSet = new(oldSet, this);
+				EpsilonDerivabilityCalculator<TokenType> newSet = new(oldSet, this);
 				newSet.Calc(seq);
 				oldSet = newSet;
 			}

@@ -22,7 +22,7 @@ namespace LL1Checker
 			 * <Factor> ::= Num      | '(' <Expr> ')'
 			*/
 
-			Grammer grammer = new();
+			Grammer<TokenType> grammer = new();
 
 			//////////////////////////////
 			// terminal symbols
@@ -82,7 +82,7 @@ namespace LL1Checker
 			 * <Factor> ::= Num | ( <Expr> )
 			*/
 
-			Grammer grammer = new();
+			Grammer<TokenType> grammer = new();
 
 			//////////////////////////////
 			// terminal symbols
@@ -146,7 +146,7 @@ namespace LL1Checker
 			 * <Factor> ::= Num | ( <Expr> )
 			*/
 
-			Grammer grammer = new();
+			Grammer<TokenType> grammer = new();
 
 			//////////////////////////////
 			// terminal symbols
@@ -197,7 +197,7 @@ namespace LL1Checker
 		/// <see cref="https://www.ohmsha.co.jp/book/9784274221163/"/>
 		private static void PL0p()
 		{
-			Grammer grammer = new();
+			Grammer<TokenTypePL0p> grammer = new();
 			SymbolPool symbolPool = new();
 
 			////////////////////////////////////////
@@ -382,38 +382,39 @@ namespace LL1Checker
 			grammer.AddRule(symbolFactor, new Symbol[] { symbolId, symbolArguments });
 			grammer.AddRule(symbolFactor, new Symbol[] { symbolIntnum });
 			grammer.AddRule(symbolFactor, new Symbol[] { symbolLparen, symbolExpression, symbolRparen });
-			// nonterminal symbols
-			grammer.AddRule(symbolConst, TokenType.KeywordConst);
-			grammer.AddRule(symbolVar, TokenType.KeywordVar);
-			grammer.AddRule(symbolFunction, TokenType.KeywordFunction);
-			grammer.AddRule(symbolBegin, TokenType.KeywordBegin);
-			grammer.AddRule(symbolEnd, TokenType.KeywordEnd);
-			grammer.AddRule(symbolIf, TokenType.KeywordIf);
-			grammer.AddRule(symbolThen, TokenType.KeywordThen);
-			grammer.AddRule(symbolWhile, TokenType.KeywordWhile);
-			grammer.AddRule(symbolDo, TokenType.KeywordDo);
-			grammer.AddRule(symbolReturn, TokenType.KeywordReturn);
-			grammer.AddRule(symbolWrite, TokenType.NameWrite);
-			grammer.AddRule(symbolWriteln, TokenType.NameWriteln);
-			grammer.AddRule(symbolOdd, TokenType.NameOdd);
-			grammer.AddRule(symbolPeriod, TokenType.PunctuationPeriod);
-			grammer.AddRule(symbolEqual, TokenType.PunctuationEqual);
-			grammer.AddRule(symbolSemicolon, TokenType.PunctuationSemicolon);
-			grammer.AddRule(symbolComma, TokenType.PunctuationComma);
-			grammer.AddRule(symbolLparen, TokenType.PunctuationLeftParen);
-			grammer.AddRule(symbolRparen, TokenType.PunctuationRightParen);
-			grammer.AddRule(symbolPlus, TokenType.PunctuationPlus);
-			grammer.AddRule(symbolMinus, TokenType.PunctuationMinus);
-			grammer.AddRule(symbolAsterisk, TokenType.PunctuationAsterisk);
-			grammer.AddRule(symbolSlash, TokenType.PunctuationSlash);
-			grammer.AddRule(symbolColonEqual, TokenType.PunctuationColonEqual);
-			grammer.AddRule(symbolLTGT, TokenType.PunctuationLTGT);
-			grammer.AddRule(symbolLT, TokenType.PunctuationLT);
-			grammer.AddRule(symbolGT, TokenType.PunctuationGT);
-			grammer.AddRule(symbolLE, TokenType.PunctuationLE);
-			grammer.AddRule(symbolGE, TokenType.PunctuationGE);
-			grammer.AddRule(symbolIntnum, TokenType.LiteralInteger);
-			grammer.AddRule(symbolId, TokenType.Identifer);
+
+			// terminal symbols
+			grammer.AddRule(symbolConst, TokenTypePL0p.KeywordConst);
+			grammer.AddRule(symbolVar, TokenTypePL0p.KeywordVar);
+			grammer.AddRule(symbolFunction, TokenTypePL0p.KeywordFunction);
+			grammer.AddRule(symbolBegin, TokenTypePL0p.KeywordBegin);
+			grammer.AddRule(symbolEnd, TokenTypePL0p.KeywordEnd);
+			grammer.AddRule(symbolIf, TokenTypePL0p.KeywordIf);
+			grammer.AddRule(symbolThen, TokenTypePL0p.KeywordThen);
+			grammer.AddRule(symbolWhile, TokenTypePL0p.KeywordWhile);
+			grammer.AddRule(symbolDo, TokenTypePL0p.KeywordDo);
+			grammer.AddRule(symbolReturn, TokenTypePL0p.KeywordReturn);
+			grammer.AddRule(symbolWrite, TokenTypePL0p.NameWrite);
+			grammer.AddRule(symbolWriteln, TokenTypePL0p.NameWriteln);
+			grammer.AddRule(symbolOdd, TokenTypePL0p.NameOdd);
+			grammer.AddRule(symbolPeriod, TokenTypePL0p.PunctuationPeriod);
+			grammer.AddRule(symbolEqual, TokenTypePL0p.PunctuationEqual);
+			grammer.AddRule(symbolSemicolon, TokenTypePL0p.PunctuationSemicolon);
+			grammer.AddRule(symbolComma, TokenTypePL0p.PunctuationComma);
+			grammer.AddRule(symbolLparen, TokenTypePL0p.PunctuationLeftParen);
+			grammer.AddRule(symbolRparen, TokenTypePL0p.PunctuationRightParen);
+			grammer.AddRule(symbolPlus, TokenTypePL0p.PunctuationPlus);
+			grammer.AddRule(symbolMinus, TokenTypePL0p.PunctuationMinus);
+			grammer.AddRule(symbolAsterisk, TokenTypePL0p.PunctuationAsterisk);
+			grammer.AddRule(symbolSlash, TokenTypePL0p.PunctuationSlash);
+			grammer.AddRule(symbolColonEqual, TokenTypePL0p.PunctuationColonEqual);
+			grammer.AddRule(symbolLTGT, TokenTypePL0p.PunctuationLTGT);
+			grammer.AddRule(symbolLT, TokenTypePL0p.PunctuationLT);
+			grammer.AddRule(symbolGT, TokenTypePL0p.PunctuationGT);
+			grammer.AddRule(symbolLE, TokenTypePL0p.PunctuationLE);
+			grammer.AddRule(symbolGE, TokenTypePL0p.PunctuationGE);
+			grammer.AddRule(symbolIntnum, TokenTypePL0p.LiteralInteger);
+			grammer.AddRule(symbolId, TokenTypePL0p.Identifer);
 
 			////////////////////////////////////////
 			//　start symbol

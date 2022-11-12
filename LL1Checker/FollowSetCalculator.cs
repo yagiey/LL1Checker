@@ -5,24 +5,24 @@ using System.Linq;
 
 namespace LL1Checker
 {
-	internal class FollowSetCalculator
+	internal class FollowSetCalculator<TokenType>
 	{
 		private readonly IDictionary<SymbolSequence, HashSet<Symbol>> _firstSet;
 		private readonly IDictionary<Symbol, HashSet<Symbol>> _followSet;
 		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
 		private readonly Symbol _startSymbol;
 
-		public FollowSetCalculator(Grammer grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		public FollowSetCalculator(Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
 			: this(new Dictionary<Symbol, HashSet<Symbol>>(), grammer, firstSet)
 		{
 		}
 
-		public FollowSetCalculator(FollowSetCalculator prev, Grammer grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		public FollowSetCalculator(FollowSetCalculator<TokenType> prev, Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
 			: this(prev.DeepCopyFollowSet(), grammer, firstSet)
 		{
 		}
 
-		private FollowSetCalculator(IDictionary<Symbol, HashSet<Symbol>> prevSets, Grammer grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		private FollowSetCalculator(IDictionary<Symbol, HashSet<Symbol>> prevSets, Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
 		{
 			_firstSet = firstSet;
 			_followSet = prevSets;
