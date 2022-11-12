@@ -83,7 +83,7 @@ namespace LL1Checker
 
 		public override string ToString()
 		{
-			return string.Join(",", _sequence.Select(it => it.ToString()));
+			return string.Join(" ", _sequence.Select(it => it.ToString()));
 		}
 
 		public IEnumerator<Symbol> GetEnumerator()

@@ -9,7 +9,8 @@ namespace LL1Checker
 			//Calc1();
 			//Calc2();
 			//Example();
-			PL0p();
+			//PL0p();
+			Json();
 		}
 
 		private static void Calc1()
@@ -427,5 +428,98 @@ namespace LL1Checker
 			Console.WriteLine(message);
 			return;
 		}
+
+		private static void Json()
+		{
+			Grammer<TokenTypeJson> grammer = new();
+			SymbolPool symbolPool = new();
+
+			////////////////////////////////////////
+			// terminal symbols
+			////////////////////////////////////////
+			// { left curly bracket
+			Symbol begin_object = symbolPool.GetSymbol(@"{");    
+			grammer.AddRule(begin_object, TokenTypeJson.BeginObject);
+			// } right curly bracket
+			Symbol end_object = symbolPool.GetSymbol(@"}");
+			grammer.AddRule(end_object, TokenTypeJson.EndObject);
+			// [ left square bracket
+			Symbol begin_array = symbolPool.GetSymbol(@"[");     
+			grammer.AddRule(begin_array, TokenTypeJson.BeginArray);
+			// ] right square bracket
+			Symbol end_array = symbolPool.GetSymbol(@"]");
+			grammer.AddRule(end_array, TokenTypeJson.EndArray);
+			// : colon
+			Symbol name_separator = symbolPool.GetSymbol(@":");
+			grammer.AddRule(name_separator, TokenTypeJson.NameSeparator);
+			// , comma
+			Symbol value_separator = symbolPool.GetSymbol(@",");
+			grammer.AddRule(value_separator, TokenTypeJson.ValueSeparator);
+			// string
+			Symbol string_ = symbolPool.GetSymbol("string");
+			grammer.AddRule(string_, TokenTypeJson.String);
+			// number
+			Symbol number = symbolPool.GetSymbol("number");
+			grammer.AddRule(number, TokenTypeJson.Number);
+			// true
+			Symbol true_ = symbolPool.GetSymbol("true");
+			grammer.AddRule(true_, TokenTypeJson.True);
+			// false
+			Symbol false_ = symbolPool.GetSymbol("false");
+			grammer.AddRule(false_, TokenTypeJson.False);
+			// null
+			Symbol null_ = symbolPool.GetSymbol("null");
+			grammer.AddRule(null_, TokenTypeJson.Null);
+
+			////////////////////////////////////////
+			// non-terminal symbols
+			////////////////////////////////////////
+			Symbol member = symbolPool.GetSymbol(@"member");
+			Symbol members = symbolPool.GetSymbol(@"members");
+			Symbol membersTail = symbolPool.GetSymbol(@"membersTail");
+			Symbol members0 = symbolPool.GetSymbol(@"membersTail");
+			Symbol object_ = symbolPool.GetSymbol(@"object");
+			Symbol values = symbolPool.GetSymbol(@"values");
+			Symbol valuesTail = symbolPool.GetSymbol(@"valuesTail");
+			Symbol values0 = symbolPool.GetSymbol(@"values0");
+			Symbol array = symbolPool.GetSymbol(@"array");
+			Symbol value = symbolPool.GetSymbol(@"value");
+
+			grammer.AddRule(member, new Symbol[] { string_, name_separator, value });
+			grammer.AddRule(members, new Symbol[] { member, membersTail });
+			grammer.AddRule(membersTail, new Symbol[] { SymbolPool.Empty });
+			grammer.AddRule(membersTail, new Symbol[] { value_separator, member, membersTail });
+			grammer.AddRule(members0, new Symbol[] { SymbolPool.Empty });
+			grammer.AddRule(members0, new Symbol[] { members });
+			grammer.AddRule(object_, new Symbol[] { begin_object, members0, end_object });
+
+			grammer.AddRule(values, new Symbol[] { value, valuesTail });
+			grammer.AddRule(valuesTail, new Symbol[] { SymbolPool.Empty });
+			grammer.AddRule(valuesTail, new Symbol[] { value, valuesTail });
+			grammer.AddRule(values0, new Symbol[] { SymbolPool.Empty });
+			grammer.AddRule(values0, new Symbol[] { values });
+			grammer.AddRule(array, new Symbol[] { begin_array, values0, end_array});
+
+			grammer.AddRule(value, new Symbol[] { false_ });
+			grammer.AddRule(value, new Symbol[] { true_ });
+			grammer.AddRule(value, new Symbol[] { null_ });
+			grammer.AddRule(value, new Symbol[] { object_ });
+			grammer.AddRule(value, new Symbol[] { array });
+			grammer.AddRule(value, new Symbol[] { number });
+			grammer.AddRule(value, new Symbol[] { string_ });
+
+			////////////////////////////////////////
+			//　start symbol
+			////////////////////////////////////////
+			grammer.SetStartSymbol(value);
+
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			string result = isLL1Grammer ? "is" : "is NOT";
+			string message = $"The specified grammer {result} a LL(1) grammer.";
+			Console.WriteLine(message);
+			return;
+
+		}
+
 	}
 }

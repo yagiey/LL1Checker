@@ -246,10 +246,11 @@ namespace LL1Checker
 				Symbol lhs = entry1.Key;
 				foreach (SymbolSequence rhs in entry1.Value)
 				{
-					Console.WriteLine($"  {lhs} -> [{rhs}]");
+					Console.WriteLine($"  {lhs} -> {rhs}");
 				}
 			}
-			Console.WriteLine($"[start symbol] {StartSymbol}");
+			Console.WriteLine($"[start symbol]");
+			Console.WriteLine($"  {StartSymbol}");
 			Console.WriteLine();
 		}
 
@@ -431,7 +432,7 @@ namespace LL1Checker
 			Console.WriteLine("----------------------------------------");
 			foreach (var entry in firstSet)
 			{
-				string strValue = string.Join(",", entry.Value);
+				string strValue = string.Join(" ", entry.Value);
 				Console.WriteLine($"FIRST([{entry.Key}]) -> {{{strValue}}}");
 			}
 			Console.WriteLine();
@@ -480,7 +481,7 @@ namespace LL1Checker
 			Console.WriteLine("----------------------------------------");
 			foreach (var entry in followSet)
 			{
-				string strValue = string.Join(",", entry.Value);
+				string strValue = string.Join(" ", entry.Value);
 				Console.WriteLine($"FOLLOW({entry.Key}) -> {{{strValue}}}");
 			}
 			Console.WriteLine();
@@ -567,7 +568,7 @@ namespace LL1Checker
 			{
 				foreach (var entry2 in entry1.Value)
 				{
-					string strSet = string.Join(",", entry2.Value);
+					string strSet = string.Join(" ", entry2.Value);
 					Console.WriteLine($"DIRECTOR({entry1.Key},[{entry2.Key}]) -> {{{strSet}}}");
 				}
 			}
@@ -645,9 +646,9 @@ namespace LL1Checker
 				Symbol param1 = entry.Key;
 				foreach (var pair in entry.Value)
 				{
-					string strSet1 = string.Join(",", pair.Item1.Value);
+					string strSet1 = string.Join(" ", pair.Item1.Value);
 					Console.WriteLine($"DIRECTOR({param1}, [{pair.Item1.Key}]) -> {{{strSet1}}}");
-					string strSet2 = string.Join(",", pair.Item2.Value);
+					string strSet2 = string.Join(" ", pair.Item2.Value);
 					Console.WriteLine($"DIRECTOR({param1}, [{pair.Item2.Key}]) -> {{{strSet2}}}");
 				}
 			}
