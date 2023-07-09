@@ -64,7 +64,7 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -128,7 +128,7 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -186,7 +186,7 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -422,7 +422,7 @@ namespace LL1Checker
 			////////////////////////////////////////
 			grammer.SetStartSymbol(symbolProgram);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -513,7 +513,7 @@ namespace LL1Checker
 			////////////////////////////////////////
 			grammer.SetStartSymbol(value);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);

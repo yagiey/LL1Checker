@@ -2,7 +2,7 @@
 
 namespace LL1Checker
 {
-	internal class Symbol
+	public class Symbol
 		: IEquatable<Symbol>
 		, IComparable<Symbol>
 	{

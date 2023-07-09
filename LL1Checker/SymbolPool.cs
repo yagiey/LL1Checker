@@ -2,7 +2,7 @@
 
 namespace LL1Checker
 {
-	internal class SymbolPool
+	public class SymbolPool
 	{
 		/// <summary>Empty</summary>
 		public static Symbol Empty { get; private set; }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LL1Checker
 {
-	internal class SymbolSequence
+	public class SymbolSequence
 		: IEnumerable<Symbol>
 		, IEquatable<SymbolSequence>
 		, IComparable<SymbolSequence>
