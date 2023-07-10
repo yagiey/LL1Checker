@@ -56,7 +56,9 @@ namespace LL1Checker
 				bool,
 				IDictionary<SymbolSequence, HashSet<Symbol>>?,
 				IDictionary<Symbol, HashSet<Symbol>>?,
-				IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?
+				IDictionary<SymbolSequence, bool>?,
+				IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?,
+				IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?
 				>
 			CheckWhetherLL1OrNot()
 		{
@@ -64,15 +66,28 @@ namespace LL1Checker
 			{
 				const string ErrMsg = "start symbol is not specified.";
 				Console.WriteLine(ErrMsg);
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)null, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 
 			if (!CheckSymbols())
 			{
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)null, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 
-			DisplayGrammer();
 			SetSymbolRank();
 
 			////////////////////////////////////////
@@ -90,15 +105,28 @@ namespace LL1Checker
 			{
 				Console.WriteLine(e.Message);
 				Console.WriteLine("failed to calculate first set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)null, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 			finally { }
 			if (firstSet is null || !firstSet.Any())
 			{
 				Console.WriteLine("failed to calculate first set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)null, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
-			DisplayFirstSet(firstSet, reqTimeFirstSet);
 
 			////////////////////////////////////////
 			// calculate FOLLOW set.
@@ -115,15 +143,28 @@ namespace LL1Checker
 			{
 				Console.WriteLine(e.Message);
 				Console.WriteLine("failed to calculate follow set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 			finally { }
 			if (followSet is null || !followSet.Any())
 			{
 				Console.WriteLine("failed to calculate follow set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)null, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
-			DisplayFollowSet(followSet, reqTimeFollowSet);
 
 			////////////////////////////////////////
 			// check each symbol can derive ε or not
@@ -140,15 +181,28 @@ namespace LL1Checker
 			{
 				Console.WriteLine(e.Message);
 				Console.WriteLine("failed to calculate ε-derivability set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)followSet, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 			finally { }
 			if (epsilonDerivabilitySet is null || !epsilonDerivabilitySet.Any())
 			{
 				Console.WriteLine("failed to calculate ε-derivability set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)followSet, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
+					(IDictionary<SymbolSequence, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
-			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet, reqTimeEpsilonDerivabilitySet);
 
 			////////////////////////////////////////
 			// calculate DIRECTOR set.
@@ -165,15 +219,28 @@ namespace LL1Checker
 			{
 				Console.WriteLine(e.Message);
 				Console.WriteLine("failed to calculate director set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)followSet, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
+					(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
 			finally { }
 			if (directorSet is null || !directorSet.Any())
 			{
 				Console.WriteLine("failed to calculate director set.");
-				return Tuple.Create(false, (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)followSet, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null);
+				return Tuple.Create(
+					false,
+					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
+					(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
+					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+				);
 			}
-			DisplayDirectorSet(directorSet, reqTimeDirectorSet);
 
 			////////////////////////////////////////
 			// check DIRECTOR set.
@@ -185,9 +252,15 @@ namespace LL1Checker
 				overwrappingPairsDic = CheckDirectorSetOverwrap(directorSet);
 				reqTimeCheckDirectorSetOverwrap = DateTime.Now.Subtract(bef).TotalMilliseconds;
 			}
-			DisplayOverwrappingDirectorSets(overwrappingPairsDic, reqTimeCheckDirectorSetOverwrap);
 
-			return Tuple.Create(!overwrappingPairsDic.Any(), (IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet, (IDictionary<Symbol, HashSet<Symbol>>?)followSet, (IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)directorSet);
+			return Tuple.Create(
+				!overwrappingPairsDic.Any(),
+				(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+				(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
+				(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
+				(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)directorSet,
+				(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)overwrappingPairsDic
+			);
 		}
 
 		private void SetSymbolRank()
@@ -229,7 +302,7 @@ namespace LL1Checker
 			}
 		}
 
-		private void DisplayGrammer()
+		public void DisplayGrammer()
 		{
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine(" Grammer");
@@ -432,19 +505,6 @@ namespace LL1Checker
 			return lhs.All(it => rhs.Contains(it)) && rhs.All(it => lhs.Contains(it));
 		}
 
-		private static void DisplayFirstSet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet, double requiredTime)
-		{
-			Console.WriteLine("----------------------------------------");
-			Console.WriteLine($"FIRST SET : required time={requiredTime} ms");
-			Console.WriteLine("----------------------------------------");
-			foreach (var entry in firstSet)
-			{
-				string strValue = string.Join(" ", entry.Value);
-				Console.WriteLine($"FIRST([{entry.Key}]) -> {{{strValue}}}");
-			}
-			Console.WriteLine();
-		}
-
 		#endregion
 
 		#region FOLLOW SET
@@ -481,19 +541,6 @@ namespace LL1Checker
 				rhs.All(it => lhs.ContainsKey(it.Key) && IsSame(lhs[it.Key], it.Value));
 		}
 
-		private static void DisplayFollowSet(IDictionary<Symbol, HashSet<Symbol>> followSet, double requiredTime)
-		{
-			Console.WriteLine("----------------------------------------");
-			Console.WriteLine($"FOLLOW SET : required time={requiredTime} ms");
-			Console.WriteLine("----------------------------------------");
-			foreach (var entry in followSet)
-			{
-				string strValue = string.Join(" ", entry.Value);
-				Console.WriteLine($"FOLLOW({entry.Key}) -> {{{strValue}}}");
-			}
-			Console.WriteLine();
-		}
-
 		#endregion
 
 		#region ε-derivability set
@@ -511,18 +558,6 @@ namespace LL1Checker
 
 
 			return oldSet.GetEpsilonDerivability();
-		}
-
-		private static void DisplayEpsilonDerivabilitySet(IDictionary<SymbolSequence, bool> epsilonDerivabilitySet, double requiredTime)
-		{
-			Console.WriteLine("----------------------------------------");
-			Console.WriteLine($"ε-Derivability SET : required time={requiredTime} ms");
-			Console.WriteLine("----------------------------------------");
-			foreach (var entry in epsilonDerivabilitySet)
-			{
-				Console.WriteLine($"εDerivability([{entry.Key}]) -> {entry.Value}");
-			}
-			Console.WriteLine();
 		}
 
 		#endregion
@@ -564,22 +599,6 @@ namespace LL1Checker
 				directorSet.Add(lhs, dic);
 			}
 			return directorSet;
-		}
-
-		private static void DisplayDirectorSet(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>> directorSet, double requiredTime)
-		{
-			Console.WriteLine("----------------------------------------");
-			Console.WriteLine($"DIRECTOR SET : required time={requiredTime} ms");
-			Console.WriteLine("----------------------------------------");
-			foreach (var entry1 in directorSet)
-			{
-				foreach (var entry2 in entry1.Value)
-				{
-					string strSet = string.Join(" ", entry2.Value);
-					Console.WriteLine($"DIRECTOR({entry1.Key},[{entry2.Key}]) -> {{{strSet}}}");
-				}
-			}
-			Console.WriteLine();
 		}
 
 		#endregion
@@ -633,33 +652,6 @@ namespace LL1Checker
 				pos1++;
 			}
 			return setPairs;
-		}
-
-		private static void DisplayOverwrappingDirectorSets(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>> overwrappingPairsDic, double requiredTime)
-		{
-			Console.WriteLine("----------------------------------------");
-			Console.WriteLine($"Overwrapping DIRECTOR SET : required time={requiredTime} ms");
-			Console.WriteLine("----------------------------------------");
-
-			if (overwrappingPairsDic.Count <= 0)
-			{
-				Console.WriteLine("Theres is no overwrapping Director set");
-				Console.WriteLine();
-				return;
-			}
-
-			foreach (var entry in overwrappingPairsDic)
-			{
-				Symbol param1 = entry.Key;
-				foreach (var pair in entry.Value)
-				{
-					string strSet1 = string.Join(" ", pair.Item1.Value);
-					Console.WriteLine($"DIRECTOR({param1}, [{pair.Item1.Key}]) -> {{{strSet1}}}");
-					string strSet2 = string.Join(" ", pair.Item2.Value);
-					Console.WriteLine($"DIRECTOR({param1}, [{pair.Item2.Key}]) -> {{{strSet2}}}");
-				}
-			}
-			Console.WriteLine();
 		}
 
 		#endregion

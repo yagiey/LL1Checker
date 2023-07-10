@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace LL1Checker
 {
@@ -64,7 +66,21 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
+			var resultCheck = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = resultCheck.Item1;
+			var firstSet = resultCheck.Item2;
+			var followSet = resultCheck.Item3;
+			var epsilonDerivabilitySet = resultCheck.Item4;
+			var directorSet = resultCheck.Item5;
+			var overwrappingPairsDic = resultCheck.Item6;
+
+			grammer.DisplayGrammer();
+			DisplayFirstSet(firstSet);
+			DisplayFollowSet(followSet);
+			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet);
+			DisplayDirectorSet(directorSet);
+			DisplayOverwrappingDirectorSets(overwrappingPairsDic);
+
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -128,7 +144,21 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
+			var resultCheck = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = resultCheck.Item1;
+			var firstSet = resultCheck.Item2;
+			var followSet = resultCheck.Item3;
+			var epsilonDerivabilitySet = resultCheck.Item4;
+			var directorSet = resultCheck.Item5;
+			var overwrappingPairsDic = resultCheck.Item6;
+
+			grammer.DisplayGrammer();
+			DisplayFirstSet(firstSet);
+			DisplayFollowSet(followSet);
+			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet);
+			DisplayDirectorSet(directorSet);
+			DisplayOverwrappingDirectorSets(overwrappingPairsDic);
+
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -186,7 +216,21 @@ namespace LL1Checker
 
 			grammer.SetStartSymbol(symbolExpression);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
+			var resultCheck = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = resultCheck.Item1;
+			var firstSet = resultCheck.Item2;
+			var followSet = resultCheck.Item3;
+			var epsilonDerivabilitySet = resultCheck.Item4;
+			var directorSet = resultCheck.Item5;
+			var overwrappingPairsDic = resultCheck.Item6;
+
+			grammer.DisplayGrammer();
+			DisplayFirstSet(firstSet);
+			DisplayFollowSet(followSet);
+			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet);
+			DisplayDirectorSet(directorSet);
+			DisplayOverwrappingDirectorSets(overwrappingPairsDic);
+
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -422,7 +466,22 @@ namespace LL1Checker
 			////////////////////////////////////////
 			grammer.SetStartSymbol(symbolProgram);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
+
+			var resultCheck = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = resultCheck.Item1;
+			var firstSet = resultCheck.Item2;
+			var followSet = resultCheck.Item3;
+			var epsilonDerivabilitySet = resultCheck.Item4;
+			var directorSet = resultCheck.Item5;
+			var overwrappingPairsDic = resultCheck.Item6;
+
+			grammer.DisplayGrammer();
+			DisplayFirstSet(firstSet);
+			DisplayFollowSet(followSet);
+			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet);
+			DisplayDirectorSet(directorSet);
+			DisplayOverwrappingDirectorSets(overwrappingPairsDic);
+
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
@@ -513,13 +572,144 @@ namespace LL1Checker
 			////////////////////////////////////////
 			grammer.SetStartSymbol(value);
 
-			bool isLL1Grammer = grammer.CheckWhetherLL1OrNot().Item1;
+
+			var resultCheck = grammer.CheckWhetherLL1OrNot();
+			bool isLL1Grammer = resultCheck.Item1;
+			var firstSet = resultCheck.Item2;
+			var followSet = resultCheck.Item3;
+			var epsilonDerivabilitySet = resultCheck.Item4;
+			var directorSet = resultCheck.Item5;
+			var overwrappingPairsDic = resultCheck.Item6;
+
+			grammer.DisplayGrammer();
+			DisplayFirstSet(firstSet);
+			DisplayFollowSet(followSet);
+			DisplayEpsilonDerivabilitySet(epsilonDerivabilitySet);
+			DisplayDirectorSet(directorSet);
+			DisplayOverwrappingDirectorSets(overwrappingPairsDic);
+
 			string result = isLL1Grammer ? "is" : "is NOT";
 			string message = $"The specified grammer {result} a LL(1) grammer.";
 			Console.WriteLine(message);
 			return;
-
 		}
 
+		#region display
+
+		private static void DisplayFirstSet(IDictionary<SymbolSequence, HashSet<Symbol>>? firstSet)
+		{
+			Console.WriteLine("----------------------------------------");
+			Console.WriteLine("FIRST SET");
+			Console.WriteLine("----------------------------------------");
+			if (firstSet is null)
+			{
+				Console.WriteLine("Failed to calculate FIRST SET");
+			}
+			else
+			{
+				foreach (var entry in firstSet)
+				{
+					string strValue = string.Join(" ", entry.Value);
+					Console.WriteLine($"FIRST([{entry.Key}]) -> {{{strValue}}}");
+				}
+			}
+			Console.WriteLine();
+		}
+
+		private static void DisplayFollowSet(IDictionary<Symbol, HashSet<Symbol>>? followSet)
+		{
+			Console.WriteLine("----------------------------------------");
+			Console.WriteLine("FOLLOW SET");
+			Console.WriteLine("----------------------------------------");
+			if (followSet is null)
+			{
+				Console.WriteLine("Failed to calculate FOLLOW SET");
+			}
+			else
+			{
+				foreach (var entry in followSet)
+				{
+					string strValue = string.Join(" ", entry.Value);
+					Console.WriteLine($"FOLLOW({entry.Key}) -> {{{strValue}}}");
+				}
+			}
+			Console.WriteLine();
+		}
+
+		private static void DisplayEpsilonDerivabilitySet(IDictionary<SymbolSequence, bool>? epsilonDerivabilitySet)
+		{
+			Console.WriteLine("----------------------------------------");
+			Console.WriteLine("ε-Derivability SET");
+			Console.WriteLine("----------------------------------------");
+			if (epsilonDerivabilitySet is null)
+			{
+				Console.WriteLine("Failed to calculate ε-Derivability SET");
+			}
+			else
+			{
+				foreach (var entry in epsilonDerivabilitySet)
+				{
+					Console.WriteLine($"εDerivability([{entry.Key}]) -> {entry.Value}");
+				}
+			}
+			Console.WriteLine();
+		}
+
+		private static void DisplayDirectorSet(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>? directorSet)
+		{
+			Console.WriteLine("----------------------------------------");
+			Console.WriteLine("DIRECTOR SET");
+			Console.WriteLine("----------------------------------------");
+			if (directorSet is null)
+			{
+				Console.WriteLine("Failed to calculate DIRECTOR SET");
+			}
+			else
+			{
+				foreach (var entry1 in directorSet)
+				{
+					foreach (var entry2 in entry1.Value)
+					{
+						string strSet = string.Join(" ", entry2.Value);
+						Console.WriteLine($"DIRECTOR({entry1.Key},[{entry2.Key}]) -> {{{strSet}}}");
+					}
+				}
+			}
+			Console.WriteLine();
+		}
+
+		private static void DisplayOverwrappingDirectorSets(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>? overwrappingPairsDic)
+		{
+			Console.WriteLine("----------------------------------------");
+			Console.WriteLine("Overwrapping DIRECTOR SET");
+			Console.WriteLine("----------------------------------------");
+			if (overwrappingPairsDic is null)
+			{
+
+			}
+			else if (overwrappingPairsDic.Count <= 0)
+			{
+				Console.WriteLine("Theres is no overwrapping Director set");
+				Console.WriteLine();
+				return;
+			}
+			else
+			{
+				foreach (var entry in overwrappingPairsDic)
+				{
+					Symbol param1 = entry.Key;
+					foreach (var pair in entry.Value)
+					{
+						string strSet1 = string.Join(" ", pair.Item1.Value);
+						Console.WriteLine($"DIRECTOR({param1}, [{pair.Item1.Key}]) -> {{{strSet1}}}");
+						string strSet2 = string.Join(" ", pair.Item2.Value);
+						Console.WriteLine($"DIRECTOR({param1}, [{pair.Item2.Key}]) -> {{{strSet2}}}");
+					}
+				}
+			}
+			Console.WriteLine();
+		}
+
+		#endregion
 	}
 }
