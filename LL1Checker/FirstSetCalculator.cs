@@ -6,17 +6,17 @@ namespace LL1Checker
 {
 	internal class FirstSetCalculator<TokenType>
 	{
-		private readonly IDictionary<SymbolSequence, HashSet<Symbol>> _firstSet;
-		private readonly IDictionary<SymbolSequence, bool> _done;
+		private readonly IDictionary<SymbolList, HashSet<Symbol>> _firstSet;
+		private readonly IDictionary<SymbolList, bool> _done;
 		private readonly HashSet<Symbol> _terminalSymbols;
-		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
+		private readonly IDictionary<Symbol, IEnumerable<SymbolList>> _nonTerminalRules;
 
 		public FirstSetCalculator(FirstSetCalculator<TokenType> prev, Grammer<TokenType> grammer)
 			: this(prev.DeepCopyFirstSet(), prev._done, grammer)
 		{
 		}
 
-		public FirstSetCalculator(IDictionary<SymbolSequence, HashSet<Symbol>> prevSets, IDictionary<SymbolSequence, bool> done, Grammer<TokenType> grammer)
+		public FirstSetCalculator(IDictionary<SymbolList, HashSet<Symbol>> prevSets, IDictionary<SymbolList, bool> done, Grammer<TokenType> grammer)
 		{
 			_firstSet = prevSets;
 			_done = done;
@@ -26,7 +26,7 @@ namespace LL1Checker
 
 		public void Calc(Symbol symbol)
 		{
-			SymbolSequence key = new(symbol);
+			SymbolList key = new(symbol);
 			if (symbol.IsEmpty() || _terminalSymbols.Contains(symbol))
 			{
 				//////////////////////////////
@@ -40,10 +40,10 @@ namespace LL1Checker
 				//////////////////////////////
 				// symbol is non-terminal symbol
 				//////////////////////////////
-				IEnumerable<SymbolSequence> rules = _nonTerminalRules[symbol];
+				IEnumerable<SymbolList> rules = _nonTerminalRules[symbol];
 				HashSet<Symbol> result = new();
 				bool isDone1 = true;
-				foreach (SymbolSequence rule in rules)
+				foreach (SymbolList rule in rules)
 				{
 					if (!_done[rule])
 					{
@@ -52,7 +52,7 @@ namespace LL1Checker
 
 					foreach (Symbol s in _firstSet[rule])
 					{
-						SymbolSequence key1 = new(s);
+						SymbolList key1 = new(s);
 						if (!_done[key1])
 						{
 							isDone1 = false;
@@ -66,23 +66,23 @@ namespace LL1Checker
 			}
 		}
 
-		public void Calc(IEnumerable<Symbol> sequence)
+		public void Calc(IEnumerable<Symbol> symbolList)
 		{
-			if (!sequence.Any())
+			if (!symbolList.Any())
 			{
-				const string ErrMsg = @"The parameter 'sequence' must have at least one element.";
-				throw new ArgumentException(ErrMsg, nameof(sequence));
+				const string ErrMsg = @"The parameter 'symbolList' must have at least one element.";
+				throw new ArgumentException(ErrMsg, nameof(symbolList));
 			}
 
-			Symbol head = sequence.First();
-			SymbolSequence keyHead = new(head);
+			Symbol head = symbolList.First();
+			SymbolList keyHead = new(head);
 			HashSet<Symbol> firstOfHead = new(_firstSet[keyHead]);
-			SymbolSequence key2 = new(sequence);
+			SymbolList key2 = new(symbolList);
 
-			IEnumerable<Symbol> rest = sequence.Skip(1);
+			IEnumerable<Symbol> rest = symbolList.Skip(1);
 			if (rest.Any() && firstOfHead.Contains(SymbolPool.Empty))
 			{
-				SymbolSequence keyRest = new(rest);
+				SymbolList keyRest = new(rest);
 				HashSet<Symbol> firstOfRest = new(_firstSet[keyRest]);
 				firstOfHead.Remove(SymbolPool.Empty);
 				IEnumerable<Symbol> result = firstOfHead.Concat(firstOfRest);
@@ -105,7 +105,7 @@ namespace LL1Checker
 			}
 		}
 
-		private void Add(SymbolSequence key, Symbol value)
+		private void Add(SymbolList key, Symbol value)
 		{
 			bool found = _firstSet.TryGetValue(key, out HashSet<Symbol>? values);
 			if (!found || values is null)
@@ -118,7 +118,7 @@ namespace LL1Checker
 			}
 		}
 
-		private void Add(SymbolSequence key, IEnumerable<Symbol> set)
+		private void Add(SymbolList key, IEnumerable<Symbol> set)
 		{
 			bool found = _firstSet.TryGetValue(key, out HashSet<Symbol>? values);
 			if (!found || values is null)
@@ -134,19 +134,19 @@ namespace LL1Checker
 			}
 		}
 
-		public IDictionary<SymbolSequence, HashSet<Symbol>> GetFirstSet()
+		public IDictionary<SymbolList, HashSet<Symbol>> GetFirstSet()
 		{
 			return _firstSet;
 		}
 
-		private IDictionary<SymbolSequence, HashSet<Symbol>> DeepCopyFirstSet()
+		private IDictionary<SymbolList, HashSet<Symbol>> DeepCopyFirstSet()
 		{
-			IDictionary<SymbolSequence, HashSet<Symbol>> clone
-				= new Dictionary<SymbolSequence, HashSet<Symbol>>();
+			IDictionary<SymbolList, HashSet<Symbol>> clone
+				= new Dictionary<SymbolList, HashSet<Symbol>>();
 
 			foreach (var entry in _firstSet)
 			{
-				SymbolSequence key = new(entry.Key);
+				SymbolList key = new(entry.Key);
 				HashSet<Symbol> values = new(entry.Value);
 				clone.Add(key, values);
 			}

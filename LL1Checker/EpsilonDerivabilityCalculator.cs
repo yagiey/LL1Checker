@@ -7,11 +7,11 @@ namespace LL1Checker
 	internal class EpsilonDerivabilityCalculator<TokenType>
 	{
 		private readonly HashSet<Symbol> _terminalSymbols;
-		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
-		private readonly IDictionary<SymbolSequence, bool> _epsilonDerivability;
+		private readonly IDictionary<Symbol, IEnumerable<SymbolList>> _nonTerminalRules;
+		private readonly IDictionary<SymbolList, bool> _epsilonDerivability;
 
 		public EpsilonDerivabilityCalculator(Grammer<TokenType> grammer)
-			: this(new Dictionary<SymbolSequence, bool>(), grammer)
+			: this(new Dictionary<SymbolList, bool>(), grammer)
 		{
 		}
 
@@ -20,14 +20,14 @@ namespace LL1Checker
 		{
 		}
 
-		private EpsilonDerivabilityCalculator(IDictionary<SymbolSequence, bool> clone, Grammer<TokenType> grammer)
+		private EpsilonDerivabilityCalculator(IDictionary<SymbolList, bool> clone, Grammer<TokenType> grammer)
 		{
 			_terminalSymbols = grammer.GetTerminalSymbols();
 			_nonTerminalRules = grammer.GetNonTerminalRules();
 			_epsilonDerivability = clone;
 		}
 
-		private void Add(SymbolSequence key, bool value)
+		private void Add(SymbolList key, bool value)
 		{
 			bool found = _epsilonDerivability.TryGetValue(key, out _);
 			if (!found)
@@ -42,7 +42,7 @@ namespace LL1Checker
 
 		public bool Calc(Symbol symbol)
 		{
-			SymbolSequence seq = new(symbol);
+			SymbolList seq = new(symbol);
 			if (_terminalSymbols.Contains(symbol))
 			{
 				////////////////////////////////////////
@@ -64,7 +64,7 @@ namespace LL1Checker
 				////////////////////////////////////////
 				// nonterminal symbol
 				////////////////////////////////////////
-				IEnumerable<SymbolSequence> rules = _nonTerminalRules[symbol];
+				IEnumerable<SymbolList> rules = _nonTerminalRules[symbol];
 				bool result = rules.Where(it => !it.Contains(symbol)).Any(it => Calc(it));
 				Add(seq, result);
 
@@ -78,24 +78,24 @@ namespace LL1Checker
 			}
 		}
 
-		public bool Calc(SymbolSequence sequence)
+		public bool Calc(SymbolList symbolList)
 		{
-			bool result = sequence.All(it => Calc(it));
-			Add(sequence, result);
-			return _epsilonDerivability[sequence];
+			bool result = symbolList.All(it => Calc(it));
+			Add(symbolList, result);
+			return _epsilonDerivability[symbolList];
 		}
 
-		private IDictionary<SymbolSequence, bool> DeepCopy()
+		private IDictionary<SymbolList, bool> DeepCopy()
 		{
-			IDictionary<SymbolSequence, bool> result = new Dictionary<SymbolSequence, bool>();
+			IDictionary<SymbolList, bool> result = new Dictionary<SymbolList, bool>();
 			foreach (var entry in _epsilonDerivability)
 			{
-				result.Add(new SymbolSequence(entry.Key), entry.Value);
+				result.Add(new SymbolList(entry.Key), entry.Value);
 			}
 			return result;
 		}
 
-		public IDictionary<SymbolSequence, bool> GetEpsilonDerivability()
+		public IDictionary<SymbolList, bool> GetEpsilonDerivability()
 		{
 			return _epsilonDerivability;
 		}

@@ -7,22 +7,22 @@ namespace LL1Checker
 {
 	internal class FollowSetCalculator<TokenType>
 	{
-		private readonly IDictionary<SymbolSequence, HashSet<Symbol>> _firstSet;
+		private readonly IDictionary<SymbolList, HashSet<Symbol>> _firstSet;
 		private readonly IDictionary<Symbol, HashSet<Symbol>> _followSet;
-		private readonly IDictionary<Symbol, IEnumerable<SymbolSequence>> _nonTerminalRules;
+		private readonly IDictionary<Symbol, IEnumerable<SymbolList>> _nonTerminalRules;
 		private readonly Symbol _startSymbol;
 
-		public FollowSetCalculator(Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		public FollowSetCalculator(Grammer<TokenType> grammer, IDictionary<SymbolList, HashSet<Symbol>> firstSet)
 			: this(new Dictionary<Symbol, HashSet<Symbol>>(), grammer, firstSet)
 		{
 		}
 
-		public FollowSetCalculator(FollowSetCalculator<TokenType> prev, Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		public FollowSetCalculator(FollowSetCalculator<TokenType> prev, Grammer<TokenType> grammer, IDictionary<SymbolList, HashSet<Symbol>> firstSet)
 			: this(prev.DeepCopyFollowSet(), grammer, firstSet)
 		{
 		}
 
-		private FollowSetCalculator(IDictionary<Symbol, HashSet<Symbol>> prevSets, Grammer<TokenType> grammer, IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		private FollowSetCalculator(IDictionary<Symbol, HashSet<Symbol>> prevSets, Grammer<TokenType> grammer, IDictionary<SymbolList, HashSet<Symbol>> firstSet)
 		{
 			_firstSet = firstSet;
 			_followSet = prevSets;
@@ -40,11 +40,11 @@ namespace LL1Checker
 
 			foreach (var entry in _nonTerminalRules)
 			{
-				foreach (SymbolSequence seq in entry.Value)
+				foreach (SymbolList seq in entry.Value)
 				{
 					if (!seq.Any())
 					{
-						const string ErrMsg = @"The rule which its right hand side is empty sequence was detected.";
+						const string ErrMsg = @"The rule which its right hand side is empty was detected.";
 						throw new Exception(ErrMsg);
 					}
 
@@ -71,7 +71,7 @@ namespace LL1Checker
 						}
 
 						bool containsEmpty = false;
-						IEnumerable<Symbol> firstSetOfRest = _firstSet[new SymbolSequence(beta)];
+						IEnumerable<Symbol> firstSetOfRest = _firstSet[new SymbolList(beta)];
 						foreach (Symbol tmp2 in firstSetOfRest)
 						{
 							if (tmp2 == SymbolPool.Empty)

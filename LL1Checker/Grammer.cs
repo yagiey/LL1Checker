@@ -8,23 +8,23 @@ namespace LL1Checker
 	public class Grammer<TokenType>
 	{
 		private readonly IDictionary<Symbol, TokenType?> _terminalRules;
-		private readonly IDictionary<Symbol, IList<SymbolSequence>> _nonTerminalRules;
+		private readonly IDictionary<Symbol, IList<SymbolList>> _nonTerminalRules;
 
 		public Grammer()
 		{
 			_terminalRules = new Dictionary<Symbol, TokenType?>();
-			_nonTerminalRules = new Dictionary<Symbol, IList<SymbolSequence>>();
+			_nonTerminalRules = new Dictionary<Symbol, IList<SymbolList>>();
 		}
 
 		public Symbol? StartSymbol { get; private set; }
 
 		public void AddRule(Symbol lhs, IEnumerable<Symbol> rhs)
 		{
-			SymbolSequence seq = new(rhs);
-			bool found = _nonTerminalRules.TryGetValue(lhs, out IList<SymbolSequence>? after);
+			SymbolList seq = new(rhs);
+			bool found = _nonTerminalRules.TryGetValue(lhs, out IList<SymbolList>? after);
 			if (!found || after == null)
 			{
-				_nonTerminalRules.Add(lhs, new List<SymbolSequence>() { seq });
+				_nonTerminalRules.Add(lhs, new List<SymbolList>() { seq });
 			}
 			else
 			{
@@ -54,11 +54,11 @@ namespace LL1Checker
 		public
 			Tuple<
 				bool,
-				IDictionary<SymbolSequence, HashSet<Symbol>>?,
+				IDictionary<SymbolList, HashSet<Symbol>>?,
 				IDictionary<Symbol, HashSet<Symbol>>?,
-				IDictionary<SymbolSequence, bool>?,
-				IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?,
-				IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?
+				IDictionary<SymbolList, bool>?,
+				IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?,
+				IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?
 				>
 			CheckWhetherLL1OrNot()
 		{
@@ -68,11 +68,11 @@ namespace LL1Checker
 				Console.WriteLine(ErrMsg);
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)null,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
@@ -80,11 +80,11 @@ namespace LL1Checker
 			{
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)null,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
@@ -93,7 +93,7 @@ namespace LL1Checker
 			////////////////////////////////////////
 			// calculate FIRST set.
 			////////////////////////////////////////
-			IDictionary<SymbolSequence, HashSet<Symbol>> firstSet;
+			IDictionary<SymbolList, HashSet<Symbol>> firstSet;
 			double reqTimeFirstSet;
 			try
 			{
@@ -107,11 +107,11 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate first set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)null,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 			finally { }
@@ -120,11 +120,11 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate first set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)null,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)null,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
@@ -145,11 +145,11 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate follow set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 			finally { }
@@ -158,18 +158,18 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate follow set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)null,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
 			////////////////////////////////////////
 			// check each symbol can derive ε or not
 			////////////////////////////////////////
-			IDictionary<SymbolSequence, bool> epsilonDerivabilitySet;
+			IDictionary<SymbolList, bool> epsilonDerivabilitySet;
 			double reqTimeEpsilonDerivabilitySet;
 			try
 			{
@@ -183,11 +183,11 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate ε-derivability set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 			finally { }
@@ -196,18 +196,18 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate ε-derivability set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
-					(IDictionary<SymbolSequence, bool>?)null,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)null,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
 			////////////////////////////////////////
 			// calculate DIRECTOR set.
 			////////////////////////////////////////
-			IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>> directorSet;
+			IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>> directorSet;
 			double reqTimeDirectorSet;
 			try
 			{
@@ -221,11 +221,11 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate director set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
-					(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)epsilonDerivabilitySet,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 			finally { }
@@ -234,18 +234,18 @@ namespace LL1Checker
 				Console.WriteLine("failed to calculate director set.");
 				return Tuple.Create(
 					false,
-					(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+					(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 					(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
-					(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
-					(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)null,
-					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)null
+					(IDictionary<SymbolList, bool>?)epsilonDerivabilitySet,
+					(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)null,
+					(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)null
 				);
 			}
 
 			////////////////////////////////////////
 			// check DIRECTOR set.
 			////////////////////////////////////////
-			IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>> overwrappingPairsDic;
+			IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>> overwrappingPairsDic;
 			double reqTimeCheckDirectorSetOverwrap;
 			{
 				DateTime bef = DateTime.Now;
@@ -255,11 +255,11 @@ namespace LL1Checker
 
 			return Tuple.Create(
 				!overwrappingPairsDic.Any(),
-				(IDictionary<SymbolSequence, HashSet<Symbol>>?)firstSet,
+				(IDictionary<SymbolList, HashSet<Symbol>>?)firstSet,
 				(IDictionary<Symbol, HashSet<Symbol>>?)followSet,
-				(IDictionary<SymbolSequence, bool>?)epsilonDerivabilitySet,
-				(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>?)directorSet,
-				(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>?)overwrappingPairsDic
+				(IDictionary<SymbolList, bool>?)epsilonDerivabilitySet,
+				(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>?)directorSet,
+				(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>?)overwrappingPairsDic
 			);
 		}
 
@@ -285,8 +285,8 @@ namespace LL1Checker
 						continue;
 					}
 
-					IList<SymbolSequence> rules = _nonTerminalRules[symbol];
-					foreach (SymbolSequence seq in rules)
+					IList<SymbolList> rules = _nonTerminalRules[symbol];
+					foreach (SymbolList seq in rules)
 					{
 						foreach (Symbol s in seq)
 						{
@@ -324,7 +324,7 @@ namespace LL1Checker
 			foreach (var entry1 in _nonTerminalRules)
 			{
 				Symbol lhs = entry1.Key;
-				foreach (SymbolSequence rhs in entry1.Value)
+				foreach (SymbolList rhs in entry1.Value)
 				{
 					Console.WriteLine($"  {lhs} -> {rhs}");
 				}
@@ -379,23 +379,23 @@ namespace LL1Checker
 
 		#region FIRST SET
 
-		private IDictionary<SymbolSequence, HashSet<Symbol>> GetFirstSet()
+		private IDictionary<SymbolList, HashSet<Symbol>> GetFirstSet()
 		{
-			SymbolSequence emptyKey = new(SymbolPool.Empty);
-			IDictionary<SymbolSequence, HashSet<Symbol>> init =
-				new Dictionary<SymbolSequence, HashSet<Symbol>>()
+			SymbolList emptyKey = new(SymbolPool.Empty);
+			IDictionary<SymbolList, HashSet<Symbol>> init =
+				new Dictionary<SymbolList, HashSet<Symbol>>()
 				{
 					{ emptyKey,  new HashSet<Symbol>(){ SymbolPool.Empty } }
 				};
-			IDictionary<SymbolSequence, bool> done =
-				new Dictionary<SymbolSequence, bool>()
+			IDictionary<SymbolList, bool> done =
+				new Dictionary<SymbolList, bool>()
 				{
 					{ emptyKey, true }
 				};
 
 			foreach (Symbol s in _terminalRules.Keys)
 			{
-				SymbolSequence key = new(s);
+				SymbolList key = new(s);
 				init.Add(key, new HashSet<Symbol>() { s });
 				done.Add(key, true);
 			}
@@ -403,7 +403,7 @@ namespace LL1Checker
 			foreach (var entry1 in _nonTerminalRules)
 			{
 
-				SymbolSequence key0 = new(entry1.Key);
+				SymbolList key0 = new(entry1.Key);
 				if (!init.ContainsKey(key0))
 				{
 					init.Add(key0, new HashSet<Symbol>());
@@ -413,12 +413,12 @@ namespace LL1Checker
 					done.Add(key0, false);
 				}
 
-				foreach (SymbolSequence seq in entry1.Value)
+				foreach (SymbolList seq in entry1.Value)
 				{
 					IEnumerable<Symbol> tail = seq;
 					while (true)
 					{
-						SymbolSequence key1 = new(tail);
+						SymbolList key1 = new(tail);
 						if (!init.ContainsKey(key1))
 						{
 							init.Add(key1, new HashSet<Symbol>());
@@ -444,7 +444,7 @@ namespace LL1Checker
 
 				foreach (Symbol s in _nonTerminalRules.Keys.OrderBy(it => -it.Rank))
 				{
-					if (!done[new SymbolSequence(s)])
+					if (!done[new SymbolList(s)])
 					{
 						FirstSetCalculator<TokenType> tmp2 = new(tmp1, this);
 						tmp2.Calc(s);
@@ -454,12 +454,12 @@ namespace LL1Checker
 
 				foreach (var entry1 in _nonTerminalRules)
 				{
-					foreach (SymbolSequence seq in entry1.Value)
+					foreach (SymbolList seq in entry1.Value)
 					{
 						IEnumerable<Symbol> tail = seq;
 						while (true)
 						{
-							if (!done[new SymbolSequence(tail)])
+							if (!done[new SymbolList(tail)])
 							{
 								FirstSetCalculator<TokenType> tmp2 = new(tmp1, this);
 								tmp2.Calc(tail);
@@ -493,7 +493,7 @@ namespace LL1Checker
 			return IsSame(lhs.GetFirstSet(), rhs.GetFirstSet());
 		}
 
-		private static bool IsSame(IDictionary<SymbolSequence, HashSet<Symbol>> lhs, IDictionary<SymbolSequence, HashSet<Symbol>> rhs)
+		private static bool IsSame(IDictionary<SymbolList, HashSet<Symbol>> lhs, IDictionary<SymbolList, HashSet<Symbol>> rhs)
 		{
 			return
 				lhs.All(it => rhs.ContainsKey(it.Key) && IsSame(rhs[it.Key], it.Value)) &&
@@ -509,7 +509,7 @@ namespace LL1Checker
 
 		#region FOLLOW SET
 
-		private IDictionary<Symbol, HashSet<Symbol>> GetFollowSet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		private IDictionary<Symbol, HashSet<Symbol>> GetFollowSet(IDictionary<SymbolList, HashSet<Symbol>> firstSet)
 		{
 			FollowSetCalculator<TokenType> oldSet = new(this, firstSet);
 			foreach (Symbol s in _nonTerminalRules.Keys.OrderBy(it => it.Rank))
@@ -545,10 +545,10 @@ namespace LL1Checker
 
 		#region ε-derivability set
 
-		private IDictionary<SymbolSequence, bool> GetEpsilonDerivabilitySet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet)
+		private IDictionary<SymbolList, bool> GetEpsilonDerivabilitySet(IDictionary<SymbolList, HashSet<Symbol>> firstSet)
 		{
 			EpsilonDerivabilityCalculator<TokenType> oldSet = new(this);
-			foreach (SymbolSequence seq in firstSet.Keys)
+			foreach (SymbolList seq in firstSet.Keys)
 			{
 				EpsilonDerivabilityCalculator<TokenType> newSet = new(oldSet, this);
 				newSet.Calc(seq);
@@ -564,7 +564,7 @@ namespace LL1Checker
 
 		#region DIRECTOR SET
 
-		private IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>> GetDirectorSet(IDictionary<SymbolSequence, HashSet<Symbol>> firstSet, IDictionary<Symbol, HashSet<Symbol>> followSet, IDictionary<SymbolSequence, bool> epsilonDerivabilitySet)
+		private IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>> GetDirectorSet(IDictionary<SymbolList, HashSet<Symbol>> firstSet, IDictionary<Symbol, HashSet<Symbol>> followSet, IDictionary<SymbolList, bool> epsilonDerivabilitySet)
 		{
 			if (!firstSet.Any())
 			{
@@ -582,13 +582,13 @@ namespace LL1Checker
 				throw new ArgumentException(ErrMsg, nameof(followSet));
 			}
 
-			IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>> directorSet =
-				new Dictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>();
+			IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>> directorSet =
+				new Dictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>();
 			foreach (var entry in _nonTerminalRules)
 			{
 				Symbol lhs = entry.Key;
-				IDictionary<SymbolSequence, HashSet<Symbol>> dic = new Dictionary<SymbolSequence, HashSet<Symbol>>();
-				foreach (SymbolSequence rhs in entry.Value)
+				IDictionary<SymbolList, HashSet<Symbol>> dic = new Dictionary<SymbolList, HashSet<Symbol>>();
+				foreach (SymbolList rhs in entry.Value)
 				{
 					HashSet<Symbol> orign =
 						epsilonDerivabilitySet[rhs] ?
@@ -605,11 +605,11 @@ namespace LL1Checker
 
 		#region check DIRECTOR set
 
-		private static IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>
-		CheckDirectorSetOverwrap(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>> directorSet)
+		private static IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>
+		CheckDirectorSetOverwrap(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>> directorSet)
 		{
-			IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>> overwrappingPairsDic =
-				new Dictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>();
+			IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>> overwrappingPairsDic =
+				new Dictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>();
 
 			foreach (var entry in directorSet)
 			{
@@ -623,11 +623,11 @@ namespace LL1Checker
 			return overwrappingPairsDic;
 		}
 
-		private static IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>
-		GetOverwrappingPairs(IDictionary<SymbolSequence, HashSet<Symbol>> sets)
+		private static IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>
+		GetOverwrappingPairs(IDictionary<SymbolList, HashSet<Symbol>> sets)
 		{
-			IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>> setPairs =
-				new List<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>();
+			IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>> setPairs =
+				new List<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>();
 
 			int pos1 = 0;
 			foreach (var entry1 in sets)
@@ -683,17 +683,17 @@ namespace LL1Checker
 			return result;
 		}
 
-		public IDictionary<Symbol, IEnumerable<SymbolSequence>> GetNonTerminalRules()
+		public IDictionary<Symbol, IEnumerable<SymbolList>> GetNonTerminalRules()
 		{
-			IDictionary<Symbol, IEnumerable<SymbolSequence>> result =
-				new Dictionary<Symbol, IEnumerable<SymbolSequence>>();
+			IDictionary<Symbol, IEnumerable<SymbolList>> result =
+				new Dictionary<Symbol, IEnumerable<SymbolList>>();
 
 			foreach (var entry in _nonTerminalRules)
 			{
-				IList<SymbolSequence> values = new List<SymbolSequence>();
+				IList<SymbolList> values = new List<SymbolList>();
 				foreach (IEnumerable<Symbol> sequence in entry.Value)
 				{
-					SymbolSequence cloneSeq = new(sequence);
+					SymbolList cloneSeq = new(sequence);
 					values.Add(cloneSeq);
 				}
 				result.Add(entry.Key, values);
