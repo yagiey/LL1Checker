@@ -596,7 +596,7 @@ namespace LL1Checker
 
 		#region display
 
-		private static void DisplayFirstSet(IDictionary<SymbolSequence, HashSet<Symbol>>? firstSet)
+		private static void DisplayFirstSet(IDictionary<SymbolList, HashSet<Symbol>>? firstSet)
 		{
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("FIRST SET");
@@ -636,7 +636,7 @@ namespace LL1Checker
 			Console.WriteLine();
 		}
 
-		private static void DisplayEpsilonDerivabilitySet(IDictionary<SymbolSequence, bool>? epsilonDerivabilitySet)
+		private static void DisplayEpsilonDerivabilitySet(IDictionary<SymbolList, bool>? epsilonDerivabilitySet)
 		{
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("ε-Derivability SET");
@@ -655,7 +655,7 @@ namespace LL1Checker
 			Console.WriteLine();
 		}
 
-		private static void DisplayDirectorSet(IDictionary<Symbol, IDictionary<SymbolSequence, HashSet<Symbol>>>? directorSet)
+		private static void DisplayDirectorSet(IDictionary<Symbol, IDictionary<SymbolList, HashSet<Symbol>>>? directorSet)
 		{
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("DIRECTOR SET");
@@ -678,7 +678,7 @@ namespace LL1Checker
 			Console.WriteLine();
 		}
 
-		private static void DisplayOverwrappingDirectorSets(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolSequence, HashSet<Symbol>>, KeyValuePair<SymbolSequence, HashSet<Symbol>>>>>? overwrappingPairsDic)
+		private static void DisplayOverwrappingDirectorSets(IDictionary<Symbol, IList<Tuple<KeyValuePair<SymbolList, HashSet<Symbol>>, KeyValuePair<SymbolList, HashSet<Symbol>>>>>? overwrappingPairsDic)
 		{
 			Console.WriteLine("----------------------------------------");
 			Console.WriteLine("Overwrapping DIRECTOR SET");
